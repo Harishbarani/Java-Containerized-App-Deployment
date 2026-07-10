@@ -1,0 +1,753 @@
+/* ============================================================
+   WealthTracker — Pale Jade Theme
+   Palette source: suggestion #2
+
+   ┌─────────────────────────────────────────────────────────┐
+   │  YOUR 5 BRAND COLOURS — change these to retheme         │
+   │                                                         │
+   │  #F4F8F5  Pale celadon      → page background           │
+   │  #E2EDE5  Soft sage         → sidebar & panel surface   │
+   │  #C8D9CC  Muted jade        → borders & raised rows     │
+   │  #6A9A82  Mid jade          → muted text & labels       │
+   │  #3A7D6E  Deep teal         → accent, buttons, active   │
+   │  #1F3A32  Dark forest       → primary text              │
+   └─────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+:root {
+    /* ── BACKGROUNDS ──────────────────────────────────────────
+       Change these to shift the depth layers of the page.     */
+
+    --bg:           #F4F8F5;   /* LINE 22  | Page background — pale celadon (lightest brand colour)          */
+    --panel:        #E2EDE5;   /* LINE 23  | Panel / card surface — soft sage                                */
+    --panel-raised: #D4E4DA;   /* LINE 24  | Hovered row, raised inset — slightly deeper sage                */
+    --sidebar:      #C8D9CC;   /* LINE 25  | Sidebar rail — muted jade, distinct from panel                  */
+
+    /* ── BORDERS ──────────────────────────────────────────────
+       Change these to make dividers more or less visible.     */
+
+    --border:       #C8D9CC;   /* LINE 30  | Main border — muted jade                                       */
+    --border-soft:  #D8E8DE;   /* LINE 31  | Subtle inner borders between rows                               */
+
+    /* ── TEXT ─────────────────────────────────────────────────
+       Change these to adjust text contrast.                   */
+
+    --text:         #1F3A32;   /* LINE 36  | Primary text — dark forest (your darkest brand colour)          */
+    --muted:        #6A9A82;   /* LINE 37  | Secondary / label text — mid jade                               */
+    --faint:        #8AB8A0;   /* LINE 38  | Placeholder / disabled text — light jade                        */
+
+    /* ── ACCENT ───────────────────────────────────────────────
+       --accent is your primary interactive colour.
+       Change --accent to shift every button, active tab,
+       focus ring, and current-week highlight at once.         */
+
+    --accent:       #3A7D6E;   /* LINE 45  | Deep teal — buttons, active states, current-week ring           */
+    --accent-dim:   rgba(58, 125, 110, 0.15); /* LINE 46  | Translucent teal for glow / backgrounds         */
+    --accent-text:  #F4F8F5;   /* LINE 47  | Text on top of --accent (light on dark teal)                   */
+
+    /* ── SEMANTIC COLOURS ─────────────────────────────────────
+       Income / invest / spend / loan — all must read on sage panels. */
+
+    --income:       #2E6B45;   /* LINE 53  | Forest green — income positive signal                           */
+    --income-dim:   rgba(46, 107, 69, 0.12);  /* LINE 54  | Translucent green                               */
+
+    --spend:        #A03030;   /* LINE 56  | Deep red — expense / spend signal                               */
+    --spend-dim:    rgba(160, 48, 48, 0.10);  /* LINE 57  | Translucent red                                 */
+
+    --invest:       #2A5A8B;   /* LINE 59  | Sapphire blue — investment signal                               */
+    --invest-dim:   rgba(42, 90, 139, 0.10);  /* LINE 60  | Translucent blue                                */
+
+    --loan:         #7A6A30;   /* LINE 62  | Warm gold — lending / loans signal                              */
+    --loan-dim:     rgba(122, 106, 48, 0.12); /* LINE 63  | Translucent gold                                */
+
+    /* ── TYPOGRAPHY ───────────────────────────────────────────
+       Change font names here to switch the entire typeface.   */
+
+    --font-display: 'Cormorant Garamond', 'Georgia', serif;  /* LINE 68  | Display: elegant serif for luxury feel */
+    --font-body:    'Inter', sans-serif;                     /* LINE 69  | Body: clean sans-serif for readability */
+}
+
+/* ── Google Fonts import for the luxury serif display font ── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);             /* Uses --bg  (line 22) */
+    color: var(--text);               /* Uses --text (line 36) */
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+button, input, select { font-family: inherit; }
+
+/* ═══════════════════════════════════════════════════════════
+   APP SHELL
+   ═══════════════════════════════════════════════════════════ */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ICON RAIL — sidebar navigation
+   Background:  --sidebar (line 25)
+   Active btn:  --accent  (line 45)
+   ═══════════════════════════════════════════════════════════ */
+.rail {
+    width: 84px;
+    flex-shrink: 0;
+    background: var(--sidebar);          /* LINE 25 */
+    border-right: 1px solid var(--border); /* LINE 30 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    /* Subtle inner glow on the right edge to feel premium */
+    box-shadow: inset -1px 0 0 rgba(58, 125, 110, 0.10);
+}
+
+/* Brand mark — the ₹ logo badge */
+.rail-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--accent);           /* LINE 45 — change to recolour the logo badge */
+    color: var(--accent-text);           /* LINE 47 */
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    /* Gold shimmer border */
+    box-shadow: 0 0 0 1px rgba(200, 217, 204, 0.60),
+                0 4px 16px rgba(58, 125, 110, 0.40);
+}
+
+.rail-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    align-items: center;
+}
+
+.rail-btn {
+    width: 66px;
+    background: none;
+    border: none;
+    color: var(--faint);                 /* LINE 38 */
+    padding: 10px 4px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.18s, color 0.18s;
+}
+
+.rail-btn i   { font-size: 1rem; }
+.rail-btn span { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.02em; }
+
+.rail-btn:hover {
+    color: var(--muted);                 /* LINE 37 */
+    background: rgba(31, 58, 50, 0.04);
+}
+
+.rail-btn.active {
+    color: var(--accent);               /* LINE 45 — active tab icon colour */
+    background: var(--accent-dim);      /* LINE 46 — active tab bg tint     */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN COLUMN
+   ═══════════════════════════════════════════════════════════ */
+.main-col {
+    flex: 1;
+    min-width: 0;
+    padding: 30px 40px 64px;
+    max-width: 1280px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STAT STRIP — top summary row
+   Panel bg:  --panel  (line 23)
+   Borders:   --border (line 30)
+   ═══════════════════════════════════════════════════════════ */
+.stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border);     /* LINE 30 */
+    border-radius: 14px;
+    background: var(--panel);           /* LINE 23 */
+    margin-bottom: 30px;
+    overflow: hidden;
+    /* Warm inner glow — makes the strip feel inlaid */
+    box-shadow: inset 0 1px 0 rgba(31, 58, 50, 0.03),
+                0 2px 16px rgba(31, 58, 50, 0.12);
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px;
+    border-right: 1px solid var(--border-soft); /* LINE 31 */
+}
+
+.stat:last-child { border-right: none; }
+
+/* Dot indicators */
+.stat-tick {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.stat-tick.income  { background: var(--income);  box-shadow: 0 0 0 3px var(--income-dim); }  /* LINE 53 */
+.stat-tick.spend   { background: var(--spend);   box-shadow: 0 0 0 3px var(--spend-dim);  }  /* LINE 56 */
+.stat-tick.invest  { background: var(--invest);  box-shadow: 0 0 0 3px var(--invest-dim); }  /* LINE 59 */
+.stat-tick.loan    { background: var(--loan);    box-shadow: 0 0 0 3px var(--loan-dim);   }  /* LINE 62 */
+
+.stat-label {
+    margin: 0 0 3px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);                /* LINE 37 */
+    font-weight: 500;
+}
+
+.stat-value {
+    margin: 0;
+    font-family: var(--font-display);  /* LINE 68 — display font for numbers */
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--text);                /* LINE 36 */
+    letter-spacing: -0.01em;
+}
+
+@media (max-width: 860px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-bottom: 1px solid var(--border-soft); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WEEKLY LEDGER STRIP
+   Signature element — horizontal-scroll receipt stubs.
+   Current week border: --accent (line 45)
+   ═══════════════════════════════════════════════════════════ */
+.weekly-section { margin-bottom: 34px; }
+
+.weekly-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.weekly-head h2 {
+    font-family: var(--font-display);   /* LINE 68 */
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);                 /* LINE 36 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.01em;
+}
+
+.weekly-head h2 i {
+    color: var(--accent);              /* LINE 45 — receipt icon colour */
+    font-size: 0.9rem;
+}
+
+.weekly-head p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--faint);               /* LINE 38 */
+}
+
+.weekly-strip {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 4px 4px 16px;
+    scroll-snap-type: x proximity;
+}
+
+.weekly-strip::-webkit-scrollbar { height: 5px; }
+.weekly-strip::-webkit-scrollbar-thumb {
+    background: var(--border);         /* LINE 30 */
+    border-radius: 4px;
+}
+.weekly-strip::-webkit-scrollbar-track { background: transparent; }
+
+/* Each week = a receipt stub card */
+.week-stub {
+    flex: 0 0 172px;
+    background: var(--panel);          /* LINE 23 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 10px;
+    padding: 14px 14px 20px;
+    scroll-snap-align: start;
+    position: relative;
+    transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+    cursor: default;
+}
+
+.week-stub:hover {
+    transform: translateY(-3px);
+    border-color: var(--border);       /* LINE 30 */
+    box-shadow: 0 8px 24px rgba(31, 58, 50, 0.10);
+}
+
+/* Torn / perforated bottom edge — receipt aesthetic */
+.week-stub::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 8px;
+    background-image:
+        linear-gradient(135deg, var(--bg) 33%, transparent 33%),  /* LINE 22 — uses page bg colour */
+        linear-gradient(45deg,  var(--bg) 33%, transparent 33%);  /* LINE 22 */
+    background-size: 10px 10px;
+    background-position: bottom;
+    background-repeat: repeat-x;
+}
+
+/* Current week — highlighted with accent ring */
+.week-stub.current {
+    border-color: var(--accent);       /* LINE 45 — current week border colour */
+    box-shadow: 0 0 0 1px var(--accent),
+                0 8px 28px rgba(58, 125, 110, 0.28); /* Uses --accent gold value */
+}
+
+.week-stub-range {
+    font-size: 0.66rem;
+    color: var(--faint);               /* LINE 38 */
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+}
+
+.week-stub-label {
+    font-family: var(--font-display);  /* LINE 68 */
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);              /* LINE 37 */
+}
+
+.week-stub.current .week-stub-label {
+    color: var(--accent);             /* LINE 45 — current week title colour */
+}
+
+/* "Now" pill badge */
+.week-pin {
+    font-size: 0.58rem;
+    background: var(--accent);        /* LINE 45 — badge background */
+    color: var(--accent-text);        /* LINE 47 — badge text */
+    padding: 1px 7px;
+    border-radius: 99px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-body);
+}
+
+/* Data rows inside each stub */
+.week-stub-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.77rem;
+    padding: 4px 0;
+    border-top: 1px dashed var(--border-soft); /* LINE 31 */
+}
+
+.week-stub-row:first-of-type { border-top: none; }
+
+.week-stub-row .lbl { color: var(--muted); }     /* LINE 37 */
+.week-stub-row .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Net total at bottom of stub */
+.week-stub-net {
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid var(--border-soft); /* LINE 31 */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.week-stub-net .lbl {
+    font-size: 0.68rem;
+    color: var(--faint);              /* LINE 38 */
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.week-stub-net .val {
+    font-family: var(--font-display); /* LINE 68 */
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.week-empty {
+    flex: 0 0 172px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--faint);              /* LINE 38 */
+    font-size: 0.78rem;
+    border: 1px dashed var(--border-soft); /* LINE 31 */
+    border-radius: 10px;
+    text-align: center;
+    padding: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT GRID
+   ═══════════════════════════════════════════════════════════ */
+.content-area { margin-top: 4px; }
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+@media (max-width: 920px) {
+    .content-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ENTRY CARD — log a new transaction
+   Panel bg: --panel  (line 23)
+   Button:   --accent (line 45)
+   ═══════════════════════════════════════════════════════════ */
+.entry-card {
+    background: var(--panel);          /* LINE 23 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 14px;
+    padding: 24px;
+    /* Subtle top highlight for depth */
+    box-shadow: inset 0 1px 0 rgba(31, 58, 50, 0.04);
+}
+
+.entry-card h3 {
+    font-family: var(--font-display);  /* LINE 68 */
+    font-size: 1.1rem;
+    margin: 0 0 20px;
+    color: var(--text);                /* LINE 36 */
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.field { margin-bottom: 14px; }
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.field label {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--muted);               /* LINE 37 */
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--sidebar);        /* LINE 25 — input wells use deepest bg */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 8px;
+    color: var(--text);                /* LINE 36 */
+    font-size: 0.875rem;
+}
+
+.field select option { background: var(--panel); } /* LINE 23 */
+
+.field input::placeholder { color: var(--faint); } /* LINE 38 */
+
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: var(--accent);       /* LINE 45 — focus ring colour */
+}
+
+.amount-input {
+    display: flex;
+    align-items: center;
+    background: var(--sidebar);        /* LINE 25 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.amount-input span {
+    padding: 0 2px 0 12px;
+    color: var(--faint);               /* LINE 38 */
+    font-size: 0.875rem;
+}
+
+.amount-input input {
+    border: none;
+    background: transparent;
+    padding-left: 4px;
+}
+
+.amount-input:focus-within {
+    border-color: var(--accent);       /* LINE 45 */
+}
+
+/* Primary CTA button */
+.btn-add {
+    width: 100%;
+    background: var(--accent);         /* LINE 45 — button colour (change here to retheme button) */
+    color: var(--accent-text);         /* LINE 47 — button text colour */
+    border: none;
+    padding: 12px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    transition: filter 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(58, 125, 110, 0.35);
+}
+
+.btn-add:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(58, 125, 110, 0.50);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RECORDS CARD — data table
+   Panel bg: --panel (line 23)
+   ═══════════════════════════════════════════════════════════ */
+.records-card {
+    background: var(--panel);          /* LINE 23 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 14px;
+    padding: 24px;
+    min-height: 440px;
+    box-shadow: inset 0 1px 0 rgba(31, 58, 50, 0.04);
+}
+
+.records-card h3 {
+    font-family: var(--font-display);  /* LINE 68 */
+    font-size: 1.1rem;
+    margin: 0 0 18px;
+    color: var(--text);                /* LINE 36 */
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.table-scroll { overflow-x: auto; }
+
+.ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.855rem;
+}
+
+.ledger-table thead th {
+    text-align: left;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--faint);               /* LINE 38 */
+    font-weight: 500;
+    padding: 0 12px 10px;
+    border-bottom: 1px solid var(--border-soft); /* LINE 31 */
+}
+
+.ledger-table td {
+    padding: 12px;
+    color: var(--text);                /* LINE 36 */
+    border-bottom: 1px solid var(--border-soft); /* LINE 31 */
+}
+
+.ledger-table tbody tr:hover {
+    background: var(--panel-raised);   /* LINE 24 */
+}
+
+.ledger-table tbody tr:last-child td { border-bottom: none; }
+
+/* Amount classes — semantic data colours */
+.amt { font-variant-numeric: tabular-nums; font-weight: 600; }
+.amt.green  { color: var(--income); }  /* LINE 53 — income positive  */
+.amt.red    { color: var(--spend);  }  /* LINE 56 — expense negative */
+.amt.blue   { color: var(--invest); }  /* LINE 59 — investment       */
+.amt.amber  { color: var(--loan);   }  /* LINE 62 — loan / lending   */
+
+/* Category pill chip */
+.pill {
+    font-size: 0.7rem;
+    padding: 3px 9px;
+    border-radius: 99px;
+    background: var(--panel-raised);   /* LINE 24 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    color: var(--muted);               /* LINE 37 */
+    white-space: nowrap;
+}
+
+/* Loan status badges */
+.status-pill {
+    font-size: 0.68rem;
+    padding: 3px 9px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-family: var(--font-body);
+}
+
+.status-pill.pending {
+    background: var(--loan-dim);       /* LINE 63 */
+    color: var(--loan);                /* LINE 62 */
+    border: 1px solid rgba(122, 106, 48, 0.25);
+}
+
+.status-pill.done {
+    background: var(--income-dim);     /* LINE 54 */
+    color: var(--income);              /* LINE 53 */
+    border: 1px solid rgba(46, 107, 69, 0.25);
+}
+
+/* Delete row button */
+.row-action {
+    background: none;
+    border: none;
+    color: var(--faint);               /* LINE 38 */
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: color 0.15s;
+}
+
+.row-action:hover { color: var(--spend); } /* LINE 56 — red-hover on delete */
+
+/* Tally button for lending */
+.tally-btn {
+    background: var(--income-dim);     /* LINE 54 */
+    border: 1px solid var(--income);   /* LINE 53 */
+    color: var(--income);              /* LINE 53 */
+    padding: 4px 12px;
+    border-radius: 7px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.tally-btn:hover {
+    background: var(--income);         /* LINE 53 */
+    color: var(--bg);                  /* LINE 22 */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANALYSIS VIEW
+   Panel bg: --panel (line 23)
+   ═══════════════════════════════════════════════════════════ */
+.analysis-card {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.analysis-toolbar {
+    background: var(--panel);          /* LINE 23 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: inset 0 1px 0 rgba(31, 58, 50, 0.04);
+}
+
+.analysis-toolbar h3 {
+    margin: 0;
+    font-family: var(--font-display);  /* LINE 68 */
+    font-size: 1rem;
+    color: var(--text);                /* LINE 36 */
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.analysis-toolbar p {
+    margin: 3px 0 0;
+    font-size: 0.77rem;
+    color: var(--faint);               /* LINE 38 */
+}
+
+.analysis-toolbar select {
+    background: var(--sidebar);        /* LINE 25 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    color: var(--text);                /* LINE 36 */
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.855rem;
+}
+
+.analysis-toolbar select:focus {
+    outline: none;
+    border-color: var(--accent);       /* LINE 45 */
+}
+
+.chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+@media (max-width: 760px) {
+    .chart-row { grid-template-columns: 1fr; }
+}
+
+.chart-box {
+    background: var(--panel);          /* LINE 23 */
+    border: 1px solid var(--border-soft); /* LINE 31 */
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: inset 0 1px 0 rgba(31, 58, 50, 0.03);
+}
+
+.chart-box h4 {
+    margin: 0 0 16px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);               /* LINE 37 */
+    text-align: center;
+    font-weight: 600;
+}

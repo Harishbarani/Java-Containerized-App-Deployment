@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger — Personal Finance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- ═══════════ ICON RAIL ═══════════ -->
+    <aside class="rail">
+        <div class="rail-mark">₹</div>
+        <nav class="rail-nav">
+            <button class="rail-btn active" id="tab-income" onclick="switchTab('income')" title="Income">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <span>Income</span>
+            </button>
+            <button class="rail-btn" id="tab-expenses" onclick="switchTab('expenses')" title="Expenses">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Spend</span>
+            </button>
+            <button class="rail-btn" id="tab-investments" onclick="switchTab('investments')" title="Investments">
+                <i class="fa-solid fa-seedling"></i>
+                <span>Invest</span>
+            </button>
+            <button class="rail-btn" id="tab-lending" onclick="switchTab('lending')" title="Lending">
+                <i class="fa-solid fa-handshake"></i>
+                <span>Lending</span>
+            </button>
+            <button class="rail-btn" id="tab-analysis" onclick="switchTab('analysis')" title="Analysis">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Insights</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- ═══════════ MAIN ═══════════ -->
+    <div class="main-col">
+
+        <!-- Top stat strip -->
+        <header class="stat-strip">
+            <div class="stat">
+                <span class="stat-tick income"></span>
+                <div>
+                    <p class="stat-label">Income</p>
+                    <p id="total-income" class="stat-value">₹0.00</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="stat-tick invest"></span>
+                <div>
+                    <p class="stat-label">Invested</p>
+                    <p id="total-investments" class="stat-value">₹0.00</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="stat-tick spend"></span>
+                <div>
+                    <p class="stat-label">Spent</p>
+                    <p id="total-expenses" class="stat-value">₹0.00</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="stat-tick loan"></span>
+                <div>
+                    <p class="stat-label">Lent out</p>
+                    <p id="total-lending" class="stat-value">₹0.00</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══════════ WEEKLY LEDGER STRIP (signature element) ═══════════ -->
+        <section class="weekly-section">
+            <div class="weekly-head">
+                <h2><i class="fa-solid fa-receipt"></i> Weekly ledger</h2>
+                <p>Last 6 weeks, side by side — this week is pinned open</p>
+            </div>
+            <div id="weekly-strip" class="weekly-strip"></div>
+        </section>
+
+        <!-- ═══════════ CONTENT ═══════════ -->
+        <section class="content-area">
+
+            <div class="content-grid">
+
+                <!-- Entry form -->
+                <div class="entry-card">
+                    <h3 id="form-title">Log income</h3>
+                    <form id="tracker-form" onsubmit="handleFormSubmit(event)">
+                        <div class="field" id="person-field" style="display:none;">
+                            <label>Borrower's name</label>
+                            <input type="text" id="personName">
+                        </div>
+                        <div class="field" id="category-field">
+                            <label>Category</label>
+                            <select id="category"></select>
+                        </div>
+                        <div class="field-row">
+                            <div class="field">
+                                <label>Amount</label>
+                                <div class="amount-input">
+                                    <span>₹</span>
+                                    <input type="number" id="amount" step="0.01" required placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Date</label>
+                                <input type="date" id="date" required>
+                            </div>
+                        </div>
+                        <div class="field" id="desc-field">
+                            <label>Note</label>
+                            <input type="text" id="description" placeholder="Optional">
+                        </div>
+                        <button type="submit" class="btn-add"><i class="fa-solid fa-plus"></i> Add entry</button>
+                    </form>
+                </div>
+
+                <!-- Records table -->
+                <div class="records-card" id="data-view-container">
+                    <h3 id="view-title">Income</h3>
+                    <div class="table-scroll">
+                        <table class="ledger-table">
+                            <thead>
+                            <tr>
+                                <th id="col-header-1">Details</th>
+                                <th id="col-header-2">Category</th>
+                                <th id="col-header-3">Date</th>
+                                <th id="col-header-4">Amount</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Analysis view (replaces grid when active) -->
+                <div class="analysis-card" id="analysis-view-container" style="display:none;">
+
+                    <div class="analysis-toolbar">
+                        <div>
+                            <h3>Compare a month</h3>
+                            <p>Against your all-time monthly average</p>
+                        </div>
+                        <select id="compare-month-select" onchange="renderCharts()"></select>
+                    </div>
+
+                    <div class="chart-row">
+                        <div class="chart-box">
+                            <h4>Where it goes</h4>
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Where it grows</h4>
+                            <canvas id="investmentChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-box wide">
+                        <h4>This month vs. average</h4>
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
