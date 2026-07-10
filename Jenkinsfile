@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE      = "yourdockerhubusername/expense-tracker"
+        DOCKER_IMAGE      = "harishbaranikumar/expense-tracker"
         DOCKER_TAG        = "${env.BUILD_NUMBER}"
         DOCKERHUB_CREDS   = credentials('dockerhub-credentials-id')
         KUBECONFIG_CREDS  = credentials('kubeconfig-credentials-id')
